@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-4.3.xsd">
+	
+	<context:annotation-config />
+    <context:component-scan base-package="com.demo.bridge" />	
+	 <int:poller default="true" fixed-delay="50"/>
+	<!-- =============================|| Direct Channel ||================================= -->
+	<!--
+	<int:channel id="messageChennelA" />
+	<int:service-activator input-channel="messageChennelA" ref="messageServiceA" output-channel="messageChennelB"/>
+    
+    <int:channel id="messageChennelB" />
+    <int:service-activator input-channel="messageChennelB" ref="messageServiceB"/>
+    -->
+    
+    
+    <!-- =============================|| Queue Channel ||================================ -->
+    <!--
+    <int:poller default="true" fixed-delay="50"/>
+    <int:channel id="queueChannel" >
+    	<int:queue capacity="100"/>
+    </int:channel>
+    
+    <int:service-activator input-channel="queueChannel" ref="messageServiceP"/>
+    -->
+    
+    <!-- =============================|| Prority Channel ||=============================== -->
+    <!--  
+    <int:channel id="queueChannel" >
+    	<int:priority-queue capacity="100" />
+    </int:channel>
+     <int:service-activator input-channel="queueChannel" ref="messageServiceP"/>
+     -->
+ 
+ 
+    <!-- ==============================|| Message Bridge ||============================= -->   
+   <!--  
+    <int:publish-subscribe-channel id="pubSubChannel" />
+   
+    <int:channel id="directChannel" />
+    
+    <int:bridge input-channel="pubSubChannel" output-channel="directChannel" />
+    <int:service-activator input-channel="directChannel" ref="serviceBridge"/>
+    
+     -->
+    <!-- ============================== || Gateway ||=============================== -->
+   <!--  <int:channel id="requestChannel" />
+	<bean id="custDataProcessor" class="com.demo.gateway.CustomerDataProcessor" />
+	<int:service-activator input-channel="requestChannel"  ref="custDataProcessor"/>
+
+	
+	<int:gateway id="customerServiceGateway" service-interface="com.demo.gateway.CustomerServiceGateway"
+		default-request-channel="requestChannel"
+		default-reply-timeout="2500" />  --> 
+		
+    <!-- ========================== || String-Transformer || ========================-->
+    <int:object-to-string-transformer 
+    	input-channel="in-channel" 
+    	output-channel="stdout" >
+    </int:object-to-string-transformer>	
+    
+    
+</beans>
